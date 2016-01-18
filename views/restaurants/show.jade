@@ -1,0 +1,61 @@
+extends ../layout
+
+block content
+  a(href='/')
+    img(id='home' src='https://cdn2.iconfinder.com/data/icons/windows-8-metro-style/128/home.png')
+  h1#title #{results[0].name}
+  div#left
+    - var genre=results[0].genre
+    - console.log(genre)
+    - var image='/images/' + genre + '.png'
+    - console.log(image)
+    img(src=image)
+    div#employees
+      a(href= '/restaurants/' + results[0].id + '/employees/new/')
+        button#addEmployee Add Employee
+      table
+        thead 
+          tr
+            th First Name
+            th Last Name
+            th Position
+        tbody
+          each val, index in employees
+            tr
+              td 
+                a(href='/restaurants/' + results[0].id + '/employees/' + employees[index].id + '/edit/') #{employees[index].first_name}
+              td 
+                a(href='/restaurants/' + results[0].id + '/employees/' + employees[index].id + '/edit/') #{employees[index].last_name}
+              td 
+                a(href='/restaurants/' + results[0].id + '/employees/' + employees[index].id + '/edit/') #{employees[index].position}
+  div#right
+    - var rating=results[0].rating
+    p #{results[0].genre} cuisine
+    p Located in #{results[0].location}
+    p #{results[0].description}
+    p Rating:
+      span
+        while rating > 0
+          img(src='/images/star.svg', class='star')
+          - rating--
+    span#buttons
+      a#edit(class ='button', href='/restaurants/' + results[0].id + '/edit/') Edit
+      form(action='/restaurants/#{results[0].id}/delete' method='post' id='deleteButton')
+        button#delete(type='submit', value='Delete') Delete
+      a#addEmployee(class='button', href='#{results[0].id}/reviews/new') Add Review
+    div#reviews
+      for val, index in reviews
+        div.review
+          div.authorSpan
+            |#{reviews[index].author}
+            span.dateSpan #{reviews[index].date.toString().slice(3,15)}
+          p.reviewText #{reviews[index].review}
+          - var revRating=reviews[index].rating
+          span.revRating
+            while revRating > 0
+              img(src='/images/star.svg', class='revStar')
+              - revRating--
+          span.editReview 
+            a(href='/restaurants/#{results[0].id}/reviews/#{reviews[index].id}/edit') Edit Review
+            
+            

@@ -1,0 +1,19 @@
+extends ../layout
+
+block content
+  div#headline
+    h1 gTables
+    p#newRest
+      a(href='/restaurants/new') New Restaurant
+  for restaurant in restaurants
+    div(class='grids', class="#{restaurant.genre}" )
+      h2#rests
+        a(href='/restaurants/'+ restaurant.id)= restaurant.name
+      - var rating=restaurant.rating
+      p#genre #{restaurant.genre}
+      p#location #{restaurant.location}
+      p#stars
+        span
+          while rating > 0
+            img(src='/images/star.svg', class='star')
+            - rating--
